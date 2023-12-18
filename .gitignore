@@ -1,3 +1,11 @@
+# Ignorar carpeta de salida
+tu_directorio_de_salida/
+
+# Ignorar archivos Excel
+*.xls
+*.xlsx
+
+
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 
