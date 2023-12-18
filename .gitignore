@@ -1,5 +1,6 @@
 # Ignorar carpeta de salida
-tu_directorio_de_salida/
+descargas_vcard/
+*.vcf
 
 # Ignorar archivos Excel
 *.xls
