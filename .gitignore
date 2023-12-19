@@ -5,6 +5,7 @@ descargas_vcard/
 # Ignorar archivos Excel
 *.xls
 *.xlsx
+*.zip
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
