@@ -1,4 +1,9 @@
 # Instalar panda https://blog.hubspot.es/website/que-es-pandas-python 
+#Install
+# pip install pandas
+# pip install pandas xlrd openpyxl
+# pip install openpyxl
+
 import pandas as pd
 import zipfile
 import os

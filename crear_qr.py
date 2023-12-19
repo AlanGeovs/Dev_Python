@@ -1,4 +1,6 @@
-#importar pandas qr code > pip install pandas qrcode
+#importar pandas qr code 
+# pip install pandas qrcode
+
 import pandas as pd
 import qrcode
 import os
