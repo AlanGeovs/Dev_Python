@@ -6,6 +6,8 @@ descargas_vcard/
 *.xls
 *.xlsx
 *.zip
+*.png 
+*.jpg
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
