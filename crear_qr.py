@@ -16,7 +16,8 @@ os.makedirs(directorio_imagenes_qr, exist_ok=True)
 
 # Función para crear código QR
 def crear_codigo_qr(sku, url_base="https://www.ecum.mx/colegiados/"):
-    url = f"{url_base}{sku}.vcf"
+    #url = f"{url_base}{sku}.vcf"
+    url = f"{url_base}{sku}.pdf"
     qr = qrcode.QRCode(
         version=1,
         error_correction=qrcode.constants.ERROR_CORRECT_L,
