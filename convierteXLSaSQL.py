@@ -23,14 +23,24 @@ with open('products.sql', 'w') as sql_file:
     sql_file.write("""
 DROP TABLE IF EXISTS products;
 CREATE TABLE products (
-    SKU VARCHAR(50),
-    ISBN VARCHAR(50),
-    description TEXT,
-    author VARCHAR(100),
-    category VARCHAR(50),
-    price_public FLOAT,
-    stock INT
-);
+  id_product int(11) NOT NULL,
+  type_product int(1) DEFAULT NULL,
+  SKU varchar(50) DEFAULT NULL,
+  ISBN varchar(50) DEFAULT NULL,
+  price_public float DEFAULT NULL,
+  price_supplier float DEFAULT NULL,
+  discount_supplier int(2) DEFAULT NULL,
+  stock int(50) DEFAULT NULL,
+  description text,
+  publisher varchar(100) DEFAULT NULL,
+  author varchar(100) DEFAULT NULL,
+  category varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id_product`);
+ALTER TABLE `products`
+  MODIFY `id_product` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
 """)
 
     # Para cada fila en el DataFrame, escribir una sentencia INSERT INTO
