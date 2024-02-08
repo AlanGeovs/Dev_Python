@@ -8,6 +8,8 @@ descargas_vcard/
 *.zip
 *.png 
 *.jpg
+*.sql
+*.sql.gz
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python
