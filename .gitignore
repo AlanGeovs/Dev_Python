@@ -1,5 +1,6 @@
 # Ignorar carpeta de salida
 descargas_vcard/
+mails/
 *.vcf
 
 # Ignorar archivos Excel
