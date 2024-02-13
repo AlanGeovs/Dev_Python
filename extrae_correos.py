@@ -8,17 +8,19 @@ from openpyxl import load_workbook
 
 # Función para extraer la dirección IP del encabezado 'Received'
 def extract_ip_from_received_headers(received_headers):
-    # Regex para encontrar direcciones IPv4 en el texto
     ip_regex = r'[0-9]+(?:\.[0-9]+){3}'
-    
-    # Buscar a través de todos los encabezados 'Received' en reversa
     for header in reversed(received_headers):
         ips = re.findall(ip_regex, header)
         if ips:
             return ips[-1]
     return None
 
-# Función para parsear el archivo y extraer la información requerida
+# Función para extraer solo la dirección de correo electrónico
+def extract_email_address(raw_email):
+    email_address = parseaddr(raw_email)[1]
+    return email_address
+
+# Función para procesar y extraer información del archivo .eml
 def parse_eml(file_path):
     with open(file_path, 'r', encoding='utf-8') as file:
         try:
@@ -28,8 +30,8 @@ def parse_eml(file_path):
             return None
     
     remitente_nombre, remitente_email = parseaddr(msg.get('From'))
-    destinatario = msg.get('To')
-    otros_destinatarios = msg.get_all('Cc')
+    destinatario_email = extract_email_address(msg.get('To'))
+    otros_destinatarios_emails = [extract_email_address(addr) for addr in msg.get_all('Cc', [])]
     fecha = msg.get('Date')
     asunto = msg.get('Subject')
     received_headers = msg.get_all('Received')
@@ -38,8 +40,8 @@ def parse_eml(file_path):
     return {
         'nombre_remitente': remitente_nombre,
         'remitente': remitente_email,
-        'destinatario': destinatario,
-        'otros_destinatarios': otros_destinatarios,
+        'destinatario': destinatario_email,
+        'otros_destinatarios': ", ".join(otros_destinatarios_emails),
         'fecha': fecha,
         'asunto': asunto,
         'ip': ip
@@ -51,18 +53,15 @@ def process_eml_files(directory):
     for filename in os.listdir(directory):
         file_path = os.path.join(directory, filename)
         parsed_email = parse_eml(file_path)
-        if parsed_email:  # Solo añadir si el parsing fue exitoso
+        if parsed_email:
             data.append(parsed_email)
     return data
 
-# Definir el directorio donde se encuentran los archivos
-eml_directory = 'mails'  # Actualiza con la ruta adecuada
-
-# Procesar los archivos
+# Procesar archivos y cargar o crear el archivo Excel
+eml_directory = 'mails'  # Asegúrate de actualizar esta ruta
 eml_data = process_eml_files(eml_directory)
+excel_path = 'bd_correos.xlsx'  # Asegúrate de actualizar esta ruta
 
-# Cargar el archivo Excel existente o crear uno nuevo si no existe
-excel_path = 'bd_correos.xlsx'  # Actualiza con la ruta adecuada
 if os.path.exists(excel_path):
     workbook = load_workbook(filename=excel_path)
     sheet = workbook.active
@@ -73,29 +72,21 @@ else:
     sheet = workbook.active
 
 last_id = sheet.cell(row=sheet.max_row, column=1).value if sheet.max_row > 1 else 0
-
-
-# Asegúrese de que last_id sea un entero antes de continuar
 last_id = int(last_id) if last_id is not None else 0
 
-# Añadir los datos de los emails al archivo Excel
 for email_data in eml_data:
-    # Solo proceder si email_data no es None
     if email_data:
-        last_id += 1  # Incrementar el ID para cada entrada
+        last_id += 1
         sheet.append([
             last_id,
             email_data.get('nombre_remitente'),
             email_data.get('remitente'),
             email_data.get('destinatario'),
-            ", ".join(email_data['otros_destinatarios']) if email_data.get('otros_destinatarios') else None,
+            email_data.get('otros_destinatarios'),
             email_data.get('fecha'),
             email_data.get('asunto'),
             email_data.get('ip')
         ])
 
-# Guardar el archivo Excel con los nuevos datos
 workbook.save(filename=excel_path)
-
-# Imprimir la ruta al archivo Excel actualizado
 print(f"Archivo Excel actualizado: {excel_path}")
