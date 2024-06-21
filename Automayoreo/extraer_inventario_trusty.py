@@ -2,10 +2,15 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 # Lista de archivos HTML
-html_files = ['1449.html', '1457.html', '1462.html', '1466.html', '1473.html', '1476.html', '1480.html', '1531.html', '1540.html', '1541.html', 
-              '1542.html', '1543.html', '1544.html', '1545.html', '1546.html', '1547.html'
+html_files = [
+            '1434.html','1435.html', '1436.html', '1437.html', '1438.html', '1439.html', '1440.html', '1441.html', '1442.html', '1443.html', '1444.html', '1445.html', '1446.html', '1447.html', '1448.html',
+            '1449.html', '1450.html', '1451.html', '1452.html', '1453.html', '1454.html', '1455.html', '1456.html', '1457.html', '1458.html', '1459.html', '1460.html', '1461.html', '1462.html', '1463.html', '1464.html',
+            '1465.html', '1466.html', '1467.html', '1468.html', '1469.html', '1470.html', '1471.html', '1472.html', '1473.html', '1474.html', '1475.html', '1476.html', '1477.html', '1478.html', '1479.html', '1480.html',
+            '1481.html', '1482.html', '1483.html', '1484.html', '1485.html', '1486.html', 
+            '1527.html', '1528.html', '1529.html', '1530.html', '1531.html', '1532.html', '1533.html', '1534.html', '1535.html', '1536.html', '1537.html', '1538.html', '1539.html', '1540.html', '1541.html', '1542.html', '1543.html', '1544.html',
+            '1545.html', '1546.html', '1547.html'                      
               ]
-
+#1486
 # Lista para almacenar los detalles de los coches
 car_details_list = []
 
@@ -54,7 +59,7 @@ for html_file in html_files:
     image_container = soup.find('div', class_='carImage_image_container__T8VGl')
     if image_container:
         image_tags = image_container.find_all('img')
-        car_details['Image_URL'] = ','.join(['https://desantorsa-carmax-resized.s3.us-west-1.amazonaws.com/test/Image/Car/' + img['src'].split('/')[-1] for img in image_tags])
+        car_details['Image_URL'] = ', '.join(['https://desantorsa-carmax-resized.s3.us-west-1.amazonaws.com/test/Image/Car/' + img['src'].split('/')[-1] for img in image_tags])
 
     # Colores
     info_container = soup.find('div', class_='carInformation_information_container__0ECe+')
@@ -82,10 +87,10 @@ for html_file in html_files:
     characteristics_tags = soup.find('div', class_='carInformation_characteristic_content__7XQ2d')
     if characteristics_tags:
         characteristics = [tag.text for tag in characteristics_tags.find_all('p')]
-        characteristics_text = '|'.join([char for char in characteristics])
-        characteristics_text = characteristics_text.split('|After submitting your information')[0]  # Eliminar desde el texto especificado
+        characteristics_text = '; '.join([char for char in characteristics])
+        characteristics_text = characteristics_text.split('; After submitting your information')[0]  # Eliminar desde el texto especificado
         car_details['Características'] = characteristics_text
-        car_details['Seguridad'] = '|'.join([char for char in characteristics if 'ABS' in char or 'Bolsas de Aire' in char])
+        car_details['Seguridad'] = '; '.join([char for char in characteristics if 'ABS' in char or 'Bolsas de Aire' in char])
 
     # Asignar valores vacíos para los campos no encontrados en el ejemplo
     fields = ['id', 'Title', 'Content', 'precio', 'km', 'version', 'Image_URL', 'Condición', 'Tipo', 'Marca', 'Modelo', 'year', 'Tipo_unidad', 'Transmisión', 'Combustible', 'Cilindros', 'Color', 'Color_int', 'Puertas', 'Características', 'Seguridad']
