@@ -2,7 +2,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 # Lista de archivos HTML
-html_files = [
+html_files = ['1431.html', '1432.html',
     '1433.html','1434.html','1435.html', '1436.html', '1437.html', '1438.html', '1439.html', '1440.html', '1441.html', '1442.html', '1443.html', '1444.html', '1445.html', '1446.html', '1447.html', '1448.html', '1449.html', '1450.html', 
     '1451.html', '1452.html', '1453.html', '1454.html', '1455.html', '1456.html', '1457.html', '1458.html', '1459.html', '1460.html', 
     '1461.html', '1462.html', '1463.html', '1464.html', '1465.html', '1466.html', '1467.html', '1468.html', '1469.html', '1470.html', 
