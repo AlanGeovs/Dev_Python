@@ -43,6 +43,30 @@ model_to_type = {
     'Urvan': 'Van (Furgoneta)'
 }
 
+# Diccionario para mapear ID a nuevos precios
+id_to_price = {
+    1432: 608200, 1528: 443900, 1476: 443900, 1431: 443900, 1527: 443900,
+    1448: 572900, 1433: 621900, 1434: 485000, 1480: 504900, 1452: 288900,
+    1454: 297300, 1455: 297300, 1496: 297300, 1504: 297300, 1495: 297300,
+    1532: 297300, 1436: 297300, 1435: 297300, 1531: 297300, 1503: 297300,
+    1530: 297300, 1494: 297300, 1505: 320300, 1533: 320300, 1482: 281900,
+    1506: 281900, 1449: 268000, 1450: 268000, 1451: 268000, 1508: 268000,
+    1545: 268000, 1507: 268000, 1447: 454700, 1474: 444900, 1475: 444900,
+    1501: 449700, 1500: 449700, 1499: 449700, 1498: 449700, 1534: 449700,
+    1497: 449700, 1546: 444700, 1511: 454700, 1512: 455700, 1535: 462900,
+    1513: 455700, 1439: 449900, 1477: 451000, 1478: 451000, 1479: 451000,
+    1491: 449900, 1437: 449900, 1514: 451000, 1445: 427900, 1446: 429000,
+    1440: 411100, 1468: 411100, 1441: 411100, 1459: 385900, 1464: 389200,
+    1465: 389200, 1466: 389200, 1467: 389200, 1493: 389200, 1517: 287100,
+    1536: 287100, 1515: 287100, 1461: 386900, 1443: 386900, 1444: 386900,
+    1490: 386900, 1486: 386900, 1518: 386900, 1485: 386900, 1460: 386900,
+    1462: 386900, 1522: 370900, 1537: 370900, 1521: 370900, 1520: 370900,
+    1524: 365200, 1519: 370900, 1523: 370900, 1547: 370900, 1458: 370900,
+    1469: 415100, 1484: 345900, 1525: 345900, 1488: 345900, 1487: 345900,
+    1456: 341200, 1542: 328900, 1539: 328900, 1540: 328900, 1463: 396900,
+    1492: 689900, 1544: 723900
+}
+
 # Lista para almacenar los detalles de los coches
 car_details_list = []
 
@@ -142,8 +166,14 @@ for html_file in html_files:
     # Agregar los detalles del coche a la lista
     car_details_list.append(car_details)
 
-# Crear un DataFrame y guardar en Excel
+# Crear un DataFrame
 df = pd.DataFrame(car_details_list)
+
+# Actualizar los precios según el diccionario id_to_price
+df['id'] = df['id'].astype(int)  # Convertir la columna 'id' a int para emparejar con las claves del diccionario
+df['precio'] = df['id'].map(id_to_price).fillna(df['precio']).astype(int)  # Actualizar los precios y convertir a int
+
+# Guardar en Excel
 df.to_excel('car_details.xlsx', index=False)
 
-print("Datos extraídos y guardados en car_details.xlsx")
+print("Datos extraídos y guardados en car_details.xlsx") 
